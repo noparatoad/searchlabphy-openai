@@ -38,14 +38,8 @@
       box-shadow:0 10px 30px rgba(37,99,235,0.2);
       margin-bottom:20px;
     }
-    .header h1{
-      margin:0 0 8px;
-      font-size:28px;
-    }
-    .header p{
-      margin:0;
-      opacity:.95;
-    }
+    .header h1{ margin:0 0 8px; font-size:28px; }
+    .header p{ margin:0; opacity:.95; }
     .card{
       background:var(--card);
       border-radius:18px;
@@ -79,31 +73,17 @@
       transition:.2s ease;
       font-weight:600;
     }
-    button:hover{
-      background:var(--primary-dark);
-      transform:translateY(-1px);
-    }
-    .btn-light{
-      background:#e5edff;
-      color:#1e40af;
-    }
-    .btn-light:hover{
-      background:#dbe7ff;
-    }
+    button:hover{ background:var(--primary-dark); transform:translateY(-1px); }
+    .btn-light{ background:#e5edff; color:#1e40af; }
+    .btn-light:hover{ background:#dbe7ff; }
     .tabs{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       margin-top:18px;
     }
-    .tab-btn{
-      background:#eef2ff;
-      color:#1f2937;
-    }
-    .tab-btn.active{
-      background:var(--primary);
-      color:white;
-    }
+    .tab-btn{ background:#eef2ff; color:#1f2937; }
+    .tab-btn.active{ background:var(--primary); color:white; }
     .hidden{display:none}
     .grid{
       display:grid;
@@ -130,8 +110,6 @@
       width:100%;
       border-collapse:collapse;
       margin-top:14px;
-      overflow:hidden;
-      border-radius:14px;
     }
     th, td{
       border:1px solid #edf2f7;
@@ -143,9 +121,7 @@
       background:#eff6ff;
       color:#1e3a8a;
     }
-    tr:nth-child(even){
-      background:#fafcff;
-    }
+    tr:nth-child(even){ background:#fafcff; }
     .status-success{color:var(--success);font-weight:700}
     .status-muted{color:var(--muted);font-weight:700}
     .note{
@@ -166,10 +142,7 @@
       font-weight:700;
       margin-bottom:12px;
     }
-    .loading{
-      color:var(--muted);
-      font-style:italic;
-    }
+    .loading{ color:var(--muted); font-style:italic; }
     .message{
       padding:12px 14px;
       border-radius:12px;
@@ -220,15 +193,15 @@
     <div class="card">
       <div class="search-row">
         <input id="studentId" type="text" placeholder="กรอกรหัสนักศึกษา" style="flex:1; min-width:260px;" />
-        <button onclick="searchStudent()">ค้นหา</button>
-        <button class="btn-light" onclick="clearSearch()">ล้างข้อมูล</button>
+        <button type="button" onclick="searchStudent()">ค้นหา</button>
+        <button type="button" class="btn-light" onclick="clearSearch()">ล้างข้อมูล</button>
       </div>
 
       <div class="tabs">
-        <button class="tab-btn active" data-tab="all" onclick="showTab('all')">1 ข้อมูลทั้งหมด</button>
-        <button class="tab-btn" data-tab="today" onclick="showTab('today')">2 เรียนวันนี้</button>
-        <button class="tab-btn" data-tab="stats" onclick="showTab('stats')">3 สถิติการเข้าเรียน</button>
-        <button class="tab-btn" data-tab="qr" onclick="showTab('qr')">4 QR Code</button>
+        <button type="button" class="tab-btn active" data-tab="all" onclick="showTab('all')">1 ข้อมูลทั้งหมด</button>
+        <button type="button" class="tab-btn" data-tab="today" onclick="showTab('today')">2 เรียนวันนี้</button>
+        <button type="button" class="tab-btn" data-tab="stats" onclick="showTab('stats')">3 สถิติการเข้าเรียน</button>
+        <button type="button" class="tab-btn" data-tab="qr" onclick="showTab('qr')">4 QR Code</button>
       </div>
 
       <div id="searchMessage"></div>
@@ -268,7 +241,7 @@
       <div class="search-row">
         <input id="adminUser" type="text" placeholder="Username" />
         <input id="adminPass" type="password" placeholder="Password" />
-        <button onclick="adminLogin()">เข้าสู่ระบบแอดมิน</button>
+        <button type="button" onclick="adminLogin()">เข้าสู่ระบบแอดมิน</button>
       </div>
 
       <div id="adminPanel" class="hidden">
@@ -281,7 +254,7 @@
           <input id="editCheckout" type="time" />
         </div>
         <div style="margin-top:12px;">
-          <button onclick="updateLab()">บันทึกการแก้ไข</button>
+          <button type="button" onclick="updateLab()">บันทึกการแก้ไข</button>
         </div>
         <div id="adminMessage"></div>
       </div>
@@ -298,10 +271,12 @@
     };
 
     document.getElementById("studentId").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") searchStudent();
+      if (e.key === "Enter") {
+        searchStudent();
+      }
     });
 
-    window.addEventListener("load", async () => {
+    window.addEventListener("load", async function () {
       await loadConfig();
       const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
@@ -320,12 +295,14 @@
           document.getElementById("statsNote").textContent =
             appConfig.stats_update_text || "สถิติจะอัพเดททุกๆวันจันทร์ เวลา 12:00 น.";
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error("loadConfig error:", e);
+      }
     }
 
-    function setMessage(elId, text, type="error") {
+    function setMessage(elId, text, type = "error") {
       const el = document.getElementById(elId);
-      el.innerHTML = text ? `<div class="message ${type}">${text}</div>` : '';
+      el.innerHTML = text ? `<div class="message ${type}">${text}</div>` : "";
     }
 
     function clearSearch() {
@@ -343,6 +320,7 @@
 
     async function searchStudent() {
       const id = document.getElementById("studentId").value.trim();
+
       if (!id) {
         setMessage("searchMessage", "กรุณากรอกรหัสนักศึกษา", "error");
         return;
@@ -368,13 +346,14 @@
         const currentTab = localStorage.getItem("activeTab") || "all";
         showTab(currentTab);
       } catch (err) {
+        console.error("searchStudent error:", err);
         setMessage("searchMessage", "เกิดข้อผิดพลาดในการเชื่อมต่อระบบ", "error");
-        console.error(err);
       }
     }
 
     function renderStudent(data) {
       const s = data.student;
+
       document.getElementById("studentInfo").innerHTML = `
         ${infoCard("รหัสนักศึกษา", s.id)}
         ${infoCard("ชื่อ-นามสกุล", s.name)}
@@ -396,7 +375,7 @@
       return `
         <div class="info-item">
           <div class="label">${label}</div>
-          <div class="value">${value || '-'}</div>
+          <div class="value">${value || "-"}</div>
         </div>
       `;
     }
@@ -416,6 +395,7 @@
             <th>เวลาเรียน</th>
           </tr>
       `;
+
       labs.forEach(l => {
         html += `
           <tr>
@@ -426,6 +406,7 @@
           </tr>
         `;
       });
+
       html += `</table>`;
       document.getElementById("allLabs").innerHTML = html;
     }
@@ -446,16 +427,18 @@
             <th>โต๊ะที่นั่ง</th>
           </tr>
       `;
+
       todayLabs.forEach(l => {
         html += `
           <tr>
             <td>${l.labNo}</td>
             <td>${l.labName}</td>
             <td>${l.time}</td>
-            <td>${desk || '-'}</td>
+            <td>${desk || "-"}</td>
           </tr>
         `;
       });
+
       html += `</table>`;
       document.getElementById("todayLabs").innerHTML = html;
     }
@@ -489,10 +472,10 @@
             <td>${l.labName}</td>
             <td>${l.date}</td>
             <td>${l.time}</td>
-            <td>${l.checkin || '-'}</td>
-            <td>${l.checkout || '-'}</td>
-            <td class="${l.attended ? 'status-success' : 'status-muted'}">
-              ${l.attended ? 'เข้าเรียนแล้ว' : 'ยังไม่เข้าเรียน'}
+            <td>${l.checkin || "-"}</td>
+            <td>${l.checkout || "-"}</td>
+            <td class="${l.attended ? "status-success" : "status-muted"}">
+              ${l.attended ? "เข้าเรียนแล้ว" : "ยังไม่เข้าเรียน"}
             </td>
           </tr>
         `;
@@ -505,6 +488,10 @@
     function renderQRCode(studentId) {
       const qr = document.getElementById("qrcode");
       qr.innerHTML = "";
+      if (typeof QRCode === "undefined") {
+        qr.innerHTML = `<div class="message error">ไม่สามารถโหลด QR Code library ได้</div>`;
+        return;
+      }
       new QRCode(qr, {
         text: studentId,
         width: 220,
@@ -513,18 +500,19 @@
     }
 
     function showTab(tab) {
-      ['all','today','stats','qr'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.add('hidden');
+      ["all","today","stats","qr"].forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.classList.add("hidden");
       });
 
       const target = document.getElementById(`tab-${tab}`);
-      if (target) target.classList.remove('hidden');
+      if (target) target.classList.remove("hidden");
 
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
       const activeBtn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
-      if (activeBtn) activeBtn.classList.add('active');
+      if (activeBtn) activeBtn.classList.add("active");
 
-      localStorage.setItem('activeTab', tab);
+      localStorage.setItem("activeTab", tab);
     }
 
     async function adminLogin() {
@@ -548,8 +536,8 @@
         document.getElementById("adminPanel").classList.remove("hidden");
         setMessage("adminMessage", "เข้าสู่ระบบแอดมินสำเร็จ", "success");
       } catch (e) {
+        console.error("adminLogin error:", e);
         setMessage("adminMessage", "ไม่สามารถเชื่อมต่อระบบได้", "error");
-        console.error(e);
       }
     }
 
@@ -582,8 +570,8 @@
           searchStudent();
         }
       } catch (e) {
+        console.error("updateLab error:", e);
         setMessage("adminMessage", "เกิดข้อผิดพลาดในการอัปเดตข้อมูล", "error");
-        console.error(e);
       }
     }
   </script>
