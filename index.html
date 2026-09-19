@@ -318,7 +318,7 @@
         if (data.ok && data.config) {
           appConfig = { ...appConfig, ...data.config };
           document.getElementById("statsNote").textContent =
-            appConfig.stats_update_text || appConfig.stats_update_text;
+            appConfig.stats_update_text || "สถิติจะอัพเดททุกๆวันจันทร์ เวลา 12:00 น.";
         }
       } catch (e) {}
     }
@@ -369,6 +369,7 @@
         showTab(currentTab);
       } catch (err) {
         setMessage("searchMessage", "เกิดข้อผิดพลาดในการเชื่อมต่อระบบ", "error");
+        console.error(err);
       }
     }
 
@@ -515,7 +516,9 @@
       ['all','today','stats','qr'].forEach(t => {
         document.getElementById(`tab-${t}`).classList.add('hidden');
       });
-      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+
+      const target = document.getElementById(`tab-${tab}`);
+      if (target) target.classList.remove('hidden');
 
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       const activeBtn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
@@ -546,6 +549,7 @@
         setMessage("adminMessage", "เข้าสู่ระบบแอดมินสำเร็จ", "success");
       } catch (e) {
         setMessage("adminMessage", "ไม่สามารถเชื่อมต่อระบบได้", "error");
+        console.error(e);
       }
     }
 
@@ -574,4 +578,14 @@
         const data = await res.json();
         setMessage("adminMessage", data.message || "บันทึกข้อมูลแล้ว", data.ok ? "success" : "error");
 
-        if (data.ok && currentData
+        if (data.ok && currentData && currentData.student && currentData.student.id === payload.studentId) {
+          searchStudent();
+        }
+      } catch (e) {
+        setMessage("adminMessage", "เกิดข้อผิดพลาดในการอัปเดตข้อมูล", "error");
+        console.error(e);
+      }
+    }
+  </script>
+</body>
+</html>
